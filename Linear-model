@@ -1,0 +1,35 @@
+
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn import linear_model
+url="http://bit.ly/w-data"
+df=pd.read_csv("url")
+df
+%matplotlib inline
+plt.title('Hours studied vs Percentage')
+plt.xlabel('Hours Studied', Fontsize=20)
+plt.ylabel('Scores(in Percentage)', Fontsize=20)
+plt.scatter(df.Hours,df.Scores, color='red', marker='+')
+x=df.iloc[:, :-1].values
+y=df.iloc[:,1].values
+from sklearn.model_selection import train_test_split
+x_train, x_test, y_train, y_test = train_test_split(x,y,test_size=0.2, random_state=0)
+reg=linear_model.LinearRegression()
+reg.fit(x_train,y_train)
+%matplotlib inline
+plt.title('Hours studied vs Percentage')
+plt.xlabel('Hours Studied', Fontsize=20)
+plt.ylabel('Scores(in Percentage)', Fontsize=20)
+plt.scatter(x,y, color='red', marker='+')
+plt.plot(x,reg.predict(x),color='blue')
+print(x_test)
+y_pred= reg.predict(x_test)
+d=pd.DataFrame({'Actual':y_test, 'predicted':y_pred})
+d
+hours=9.25
+p=reg.predict([[hours]])
+print("No. of hours= {}".format(hours))
+print("Predicted Score={}".format(p[0]))
+from sklearn import metrics
+print('Mean Absolute Error:',metrics.mean_absolute_error(y_test,y_pred))
